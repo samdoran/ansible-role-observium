@@ -1,0 +1,62 @@
+---
+- include: Debian.yml
+  when: ansible_os_family == "Debian"
+  tags: [ "observium" ]
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+  tags: [ "observium" ]
+
+- name: Create directory
+  file:
+    state: directory
+    path: "{{ ob_install_directory }}"
+    owner: "{{ ob_user }}"
+    group: "{{ ob_group }}"
+    mode: 0755
+  tags: [ "observium" ]
+
+# In Ansible 2.0, the unarchive module will also be able to fetch URLs
+# When 2.0 is released, change these two tasks to use the unarchive module
+# - name: Download and unarchive Observium
+#   unarchive:
+#     src: "{{ ob_download_url }}"
+#     copy: no
+#     dest: "{{ ob_install_directory }}"
+#     owner: "{{ ob_user }}"
+#     group: "{{ ob_group }}"
+#     mode: 0644
+#   when: ob_edition == "community"
+#   tags: [ "observium" ]
+
+- name: Downoald Observium Subscription Edition
+  subversion:
+    repo: "{{ ob_svn_url }}"
+    dest: "{{ ob_install_directory }}"
+    password: "{{ ob_svn_password }}"
+  when: ob_edition == "subscription"
+  tags: [ "observium" ]
+
+- name: Download Observium Community Edtition
+  get_url:
+    url: "{{ ob_download_url }}"
+    dest: "{{ ob_install_directory }}"
+    owner: "{{ ob_user }}"
+    group: "{{ ob_group }}"
+    mode: 0644
+  when: ob_edition == "community"
+  tags: [ "observium" ]
+
+- name: Unarchive Observium Community Edtition
+  unarchive:
+    copy: no
+    src: "{{ ob_install_directory }}/{{ ob_filename }}"
+    dest: "{{ ob_install_directory }}"
+    owner: "{{ ob_user }}"
+    group: "{{ ob_group }}"
+    mode: 0644
+  when: ob_edition == "community"
+  tags: [ "observium" ]
+
+
+
