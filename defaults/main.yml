@@ -3,10 +3,11 @@ ob_edition: community                                           # Set to "commun
 
 # These variables only need to be set if you have a
 # subscription to Observium
-ob_svn_password: ""                                             # This should be kept in an Ansible vault. Only needed if you have a subscription.
+ob_svn_password: ""                                             # This should be kept in an Ansible vault.
 ob_svn_url: http://svn.observium.org/svn/observium/trunk        # Set to http://svn.observium.org/svn/observium/branches/stable for the stable train
 
 ob_install_directory: /opt/observium
+ob_untar_directory: /opt/
 ob_user: observium
 ob_group: observium
 ob_filename: observium-community-latest.tar.gz
