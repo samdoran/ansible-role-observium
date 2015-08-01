@@ -1,0 +1,14 @@
+---
+- name: Copy Apache config
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+    owner: apache
+    group: apache
+    mode: 0644
+
+- name: Start and enable Apache
+  service:
+    name: httpde
+    state: started
+    enable: yes

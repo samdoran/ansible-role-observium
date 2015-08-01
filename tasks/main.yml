@@ -75,6 +75,7 @@
     backup: yes
   tags: [ 'observium' , 'obconfig' ]
 
-- { include: mysql.yml, tags: [ 'observium' , 'obdb' ] }
-- { include: rrd.yml, tags: [ 'observium' , 'obdb' ] }
+- { include: mysql.yml, tags: [ 'observium' , 'obdb', 'mysql' ] }
+- { include: rrd.yml, tags: [ 'observium' , 'rrd' ] }
+- { include: apache.yml, tags: [ 'observium' , 'apache' , 'httpd' ] }
 
