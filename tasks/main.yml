@@ -60,7 +60,7 @@
     copy: no
     creates: "{{ ob_install_dir }}/adduser.php"
     src: "{{ ob_install_dir }}/{{ ob_filename }}"
-    dest: "{{ ob_untar_directory }}"
+    dest: "{{ ob_untar_dir }}"
     owner: "{{ ob_user }}"
     group: "{{ ob_group }}"
   when: ob_edition == "community"
@@ -76,3 +76,5 @@
   tags: [ 'observium' , 'obconfig' ]
 
 - { include: mysql.yml, tags: [ 'observium' , 'obdb' ] }
+- { include: rrd.yml, tags: [ 'observium' , 'obdb' ] }
+

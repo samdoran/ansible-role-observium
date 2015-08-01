@@ -1,0 +1,7 @@
+---
+- name: Create directory for RRDs
+  file:
+    state: directory
+    dest: "{{ ob_rrd_dir }}"
+    owner: apache
+    group: apache

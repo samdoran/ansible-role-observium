@@ -7,7 +7,8 @@ ob_svn_password: ""                                             # This should be
 ob_svn_url: http://svn.observium.org/svn/observium/trunk        # Set to http://svn.observium.org/svn/observium/branches/stable for the stable train
 
 ob_install_dir: /opt/observium
-ob_untar_directory: /opt/
+ob_untar_dir: /opt/
+ob_rrd_dir: "{{ ob_install_dir }}/rrd"
 ob_user: observium
 ob_group: observium
 ob_filename: observium-community-latest.tar.gz
