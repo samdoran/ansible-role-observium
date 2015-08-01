@@ -1,0 +1,103 @@
+---
+- name: Copy my.cnf
+  template:
+    src: my.cnf.j2
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify: restart mysql
+
+- name: Start and enable MySQL
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: Set MySQL root password | Port
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    state: present
+    login_port: "{{ mysql_port }}"
+  when: not mysql_skip_networking
+
+- name: Set MySQL root password | Socket
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    state: present
+    login_unix_socket: "{{ mysql_socket }}"
+  when: mysql_skip_networking
+
+- name: Remove test database | Port
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_port: "{{ ob_db_port | default('3306') }}"
+    name: test
+    state: absent
+  when: not mysql_skip_networking
+
+- name: Remove test database | Socket
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: "{{ mysql_socket }}"
+    name: test
+    state: absent
+  when: not mysql_skip_networking
+
+- name: Create MySQL Database for Observium | Port
+  mysql_db:
+    login_host: "{{ ob_db_host }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_port: "{{ ob_db_port | default('3306') }}"
+    name: "{{ ob_db_name }}"
+    collation: utf8_general_ci
+    encoding: utf8
+    state: present
+  when: not mysql_skip_networking
+
+- name: Creat MySQL Database for Observium | Socket
+  mysql_db:
+    login_host: "{{ ob_db_host }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: "{{ mysql_socket }}"
+    name: "{{ ob_db_name }}"
+    collation: utf8_general_ci
+    encoding: utf8
+    state: present
+  when: mysql_skip_networking
+
+- name: Create MySQL observium account | Port
+  mysql_user:
+    login_host: "{{ ob_db_host }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_port: "{{ ob_db_port | default('3306') }}"
+    name: "{{ ob_db_user }}"
+    password: "{{ ob_db_pass }}"
+    # update_passward: always                 # New in Ansible 2.0
+    priv: observium.*,:ALL
+  when: not mysql_skip_networking
+
+- name: Create MySQL observium account | Socket
+  mysql_user:
+    login_host: "{{ ob_db_host }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: "{{ mysql_socket }}"
+    name: "{{ ob_db_user }}"
+    password: "{{ ob_db_pass }}"
+    # update_passward: always                 # New in Ansible 2.0
+    priv: observium.*,:ALL
+  when: mysql_skip_networking
+
+- name: Setup MySQL schema
+  command: "php includes/update/update.php"
+  args:
+    chdir: "{{ ob_install_directory }}"

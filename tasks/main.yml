@@ -18,7 +18,7 @@
 - name: Create observium installation directory
   file:
     state: directory
-    path: "{{ ob_install_directory }}"
+    path: "{{ ob_install_dir }}"
     owner: "{{ ob_user }}"
     group: "{{ ob_group }}"
     mode: 0775
@@ -30,7 +30,7 @@
 #   unarchive:
 #     src: "{{ ob_download_url }}"
 #     copy: no
-#     dest: "{{ ob_install_directory }}"
+#     dest: "{{ ob_install_dir }}"
 #     owner: "{{ ob_user }}"
 #     group: "{{ ob_group }}"
 #     mode: 0644
@@ -40,7 +40,7 @@
 - name: Downoald Observium Subscription Edition
   subversion:
     repo: "{{ ob_svn_url }}"
-    dest: "{{ ob_install_directory }}"
+    dest: "{{ ob_install_dir }}"
     password: "{{ ob_svn_password }}"
   when: ob_edition == "subscription"
   tags: [ 'observium' ]
@@ -48,7 +48,7 @@
 - name: Download Observium Community Edtition
   get_url:
     url: "{{ ob_download_url }}"
-    dest: "{{ ob_install_directory }}"
+    dest: "{{ ob_install_dir }}"
     owner: "{{ ob_user }}"
     group: "{{ ob_group }}"
     mode: 0644
@@ -58,8 +58,8 @@
 - name: Unarchive Observium Community Edtition
   unarchive:
     copy: no
-    creates: "{{ ob_install_directory }}/adduser.php"
-    src: "{{ ob_install_directory }}/{{ ob_filename }}"
+    creates: "{{ ob_install_dir }}/adduser.php"
+    src: "{{ ob_install_dir }}/{{ ob_filename }}"
     dest: "{{ ob_untar_directory }}"
     owner: "{{ ob_user }}"
     group: "{{ ob_group }}"
@@ -69,9 +69,10 @@
 - name: Copy config.php
   template:
     src: config.php.j2
-    dest: "{{ ob_install_directory }}/config.php"
+    dest: "{{ ob_install_dir }}/config.php"
     owner: observium
     group: observium
+    backup: yes
+  tags: [ 'observium' , 'obconfig' ]
 
-
-
+- { include: mysql.yml, tags: [ 'observium' , 'obdb' ] }

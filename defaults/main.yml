@@ -6,9 +6,26 @@ ob_edition: community                                           # Set to "commun
 ob_svn_password: ""                                             # This should be kept in an Ansible vault.
 ob_svn_url: http://svn.observium.org/svn/observium/trunk        # Set to http://svn.observium.org/svn/observium/branches/stable for the stable train
 
-ob_install_directory: /opt/observium
+ob_install_dir: /opt/observium
 ob_untar_directory: /opt/
 ob_user: observium
 ob_group: observium
 ob_filename: observium-community-latest.tar.gz
 ob_download_url: http://www.observium.org/{{ ob_filename }}
+
+
+# --- MySQL Database --- #
+ob_db_host: localhost
+ob_db_user: observium
+ob_db_pass: "Hfq2xUHjsndmbLA2TqoNNwd?uqHxQ^"
+ob_db_name: observium
+
+mysql_port: 3306
+mysql_socket: /var/lib/mysql/mysql.sock
+mysql_skip_networking: False
+
+mysql_root_password: "n9TLLAky8Ypy=rmosjYkBtiW*dudVw"
+
+
+
+# --- config.php options --- #
