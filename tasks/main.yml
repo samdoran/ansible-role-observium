@@ -15,13 +15,13 @@
     system: yes
   tags: [ 'observium' ]
 
-- name: Create installation directory
+- name: Create observium installation directory
   file:
     state: directory
     path: "{{ ob_install_directory }}"
     owner: "{{ ob_user }}"
     group: "{{ ob_group }}"
-    mode: 0755
+    mode: 0775
   tags: [ 'observium' ]
 
 # In Ansible 2.0, the unarchive module will also be able to fetch URLs
@@ -53,7 +53,7 @@
     group: "{{ ob_group }}"
     mode: 0644
   when: ob_edition == "community"
-  tags: [ 'observium' ]
+  tags: [ 'observium' , 'download' ]
 
 - name: Unarchive Observium Community Edtition
   unarchive:
@@ -64,7 +64,7 @@
     owner: "{{ ob_user }}"
     group: "{{ ob_group }}"
   when: ob_edition == "community"
-  tags: [ 'observium' ]
+  tags: [ 'observium' , 'install' ]
 
 - name: Copy config.php
   template:
