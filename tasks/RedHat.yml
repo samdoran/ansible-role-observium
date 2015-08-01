@@ -1,0 +1,52 @@
+---
+- name: Add RPM key for Repoforge RPM repository
+  rpm_key:
+    key: http://apt.sw.be/RPM-GPG-KEY.dag.txt
+    state: present
+    validate_certs: yes
+  tags: [ 'observium' , 'rpmkey' ]
+
+- name: Add extra repositories
+  yum:
+    state: present
+    name: "{{ item }}"
+  with_items:
+    - "http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.{{ ansible_architecture }}.rpm"
+    - "http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm"
+
+- name: Install packages
+  yum:
+    state: latest
+    name: "{{ item }}"
+  with_items:
+    - wget
+    - httpd
+    - php
+    - php-mysql
+    - php-gd
+    - php-posix
+    - php-mcrypt
+    - php-pear.noarch
+    - vixie-cron
+    - net-snmp
+    - net-snmp-utils
+    - fping
+    - mysql-server
+    - mysql
+    - MySQL-python
+    - rrdtool
+    - subversion
+    - jwhois
+    - ipmitool
+    - graphviz
+    - ImageMagick
+    - libvirt
+  tags: [ 'observium' , 'packages' ]
+
+# The instructions say to disable SELinux. I'm not terribly happy with this
+# long term, but I'll disable it for now.
+- name: Disable SELinux
+  selinux:
+    policy: disable
+    state: disabled
+  tags: [ 'observium' , 'selinux' ]
