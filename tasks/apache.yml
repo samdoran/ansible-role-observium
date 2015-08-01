@@ -7,8 +7,16 @@
     group: apache
     mode: 0644
 
+- name: Create Apache log directory
+  file:
+    state: directory
+    dest: "{{ apache_log_dir }}"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_group }}"
+    mode: 0755
+
 - name: Start and enable Apache
   service:
-    name: httpde
+    name: httpd
     state: started
     enable: yes

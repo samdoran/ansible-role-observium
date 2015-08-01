@@ -7,6 +7,7 @@ ob_svn_password: ""                                             # This should be
 ob_svn_url: http://svn.observium.org/svn/observium/trunk        # Set to http://svn.observium.org/svn/observium/branches/stable for the stable train
 
 ob_install_dir: /opt/observium
+ob_log_dir: /var/log/observium
 ob_untar_dir: /opt/
 ob_rrd_dir: "{{ ob_install_dir }}/rrd"
 ob_user: observium
@@ -27,6 +28,19 @@ mysql_skip_networking: False
 
 mysql_root_password: "n9TLLAky8Ypy=rmosjYkBtiW*dudVw"
 
+
+# --- Apache --- #
+
+apach_http_port: 80
+apach_https_port: 443
+apache_document_root: "{{ ob_install_dir }}/html"
+apache_fqdn: "{{ ansible_fqdn }}"
+apache_custom_log: "{{ ob_log_dir }}/access_log combined"
+apache_error_log: "{{ ob_log_dir }}/error_log"
+
+apache_options:
+  - "AllowOverride All"
+  - "Options FollowSymLinks MultiViews"
 
 
 # --- config.php options --- #

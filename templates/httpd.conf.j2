@@ -1,10 +1,11 @@
-<VirtualHost *:80>
-   DocumentRoot /opt/observium/html/
-   ServerName  observium.domain.com
-   CustomLog /opt/observium/logs/access_log combined
-   ErrorLog /opt/observium/logs/error_log
-   <Directory "/opt/observium/html/">
-     AllowOverride All
-     Options FollowSymLinks MultiViews
+<VirtualHost *:{{ apache_http_port }}>
+   DocumentRoot {{ apache_document_root }}
+   ServerName  {{ apache_fqdn }}
+   CustomLog {{ apache_custom_log }}
+   ErrorLog {{ apache_error _log }}
+   <Directory "{{ apache_document_root">
+   {% for opt in apache_options %}
+       {{ opt }}
+   {% endfor %}
    </Directory>
 </VirtualHost>
