@@ -20,4 +20,6 @@ galaxy_info:
     - networking
     - system
 
-dependencies: []
+dependencies:
+  - geerlingguy.apache
+  - geerlingguy.mysql
