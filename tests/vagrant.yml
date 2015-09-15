@@ -1,0 +1,6 @@
+---
+- hosts: observium
+  remote_user: vagrant
+  sudo: True
+  roles:
+    - observium
